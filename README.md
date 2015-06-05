@@ -1,6 +1,14 @@
+DCP is memcached protocul, with additional OP Codes.
+	- And vBucket instead of Ketama (http://www.audioscrobbler.net/development/ketama)
+	- 
+
+
+
+
 * Simple client: https://github.com/couchbaselabs/dcp-documentation/blob/master/documentation/building-a-simple-client.md
 * https://github.com/couchbaselabs/python-dcp-client.git
-*
+* http://docs.couchbase.com/developer/dev-guide-3.0/client-library.html
+* 
 
 
 
@@ -55,3 +63,53 @@
 * ElasticSearch / LucidWorks Solr-Couchbase-Plugin is using the 2.0 XDCR feature… “Acts like” a couchbase cluster, and the main cluster sets up and starts replication.
 * Det verkar som att man kan börja om från början, även efter “ta bort document och restart couchbase”. Man verkar dock bara få “deleted”, inte “created”
 *
+
+
+
+TAP, internal Cluster data transfer.
+
+
+
+
+
+
+
+
+Previous XDCR used CAPI mode XDCR (for example, by the ElasticSearch plugin) which batched mutations and sent them using the REST API called CAPI (unpacked on the destination, and integrated with individual memcached OPs.)
+Couchbase 2.2 and later can use XMEM (XDCR protocol 2).
+Couchbase 3.0 and later can use DCP (and will use DCP for bucket streams, even within the cluster).
+
+
+
+
+
+
+
+
+Couchbase XDCR for indexing
+
+DCP is the new XDCR-protocol used by Couchbase 3.
+
+
+DCP recommended by Couchbase devs (Mike W) on #couchbase @ Freenode.
+
+
+
+
+
+
+Old XDCR pushed changes to remote CB Cluster. To be able to use this for indexing, the indexer will have to emulate a Couchbase Cluster (this is used by the ElasticSearch Couchbase connector, and the Solr Couchbase plugin.)
+
+CDP / TAP
+
+
+
+
+
+
+
+
+
+References:
+http://www.slideshare.net/Couchbase/dcp-deep-dive-couchbase-connect-2014-mikewcihanb
+http://docs.couchbase.com/developer/dev-guide-3.0/client-library.html

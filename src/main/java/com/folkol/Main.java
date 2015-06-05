@@ -1,6 +1,6 @@
 package com.folkol;
 
-import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import javax.ws.rs.client.Client;
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
-
 public class Main {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     static class Conf {
+        @JsonIgnoreProperties(ignoreUnknown = true)
         static class Node {
             public Map<String, Integer> ports;
             public String hostname;
@@ -22,7 +22,9 @@ public class Main {
         public List<Node> nodes;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     static class Bucket {
+        @JsonIgnoreProperties(ignoreUnknown = true)
         static class ServerMap {
             public String hashAlgorithm;
             public int numReplicas;
@@ -44,7 +46,7 @@ public class Main {
 
     public static void main(String[] args) {
         Client client = ClientBuilder.newClient()
-                .register(new JacksonJaxbJsonProvider().configure(FAIL_ON_UNKNOWN_PROPERTIES, false))
+//                .register(new JacksonJaxbJsonProvider().configure(FAIL_ON_UNKNOWN_PROPERTIES, false))
                 .register(HttpAuthenticationFeature.basic("admin", "password"));
 
         Invocation.Builder pools = client.target("http://localhost:8091/pools/default").request();
